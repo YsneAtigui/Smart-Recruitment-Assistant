@@ -1,0 +1,23 @@
+# Environment
+.env
+
+
+# Python
+__pycache__/
+*.pyc
+*.log
+*.tmp
+
+# Virtual environment
+venv/
+.venv/
+
+# IDEs
+.idea/
+.vscode/
+
+GEMINI.md
+
+# OS generated files
+.DS_Store
+Thumbs.db
