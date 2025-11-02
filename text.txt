@@ -1,0 +1,67 @@
+Here is a conceptual guide on how you would structure your app.py file:
+
+  1. Imports and Initialization
+
+   * Import Everything: At the top of app.py, you would import all the necessary functions and classes you've created:
+       * From src.utils.rag_pipeline: RAGPipeline
+       * From src.utils.embedding_generator: generate_embeddings
+       * From src.core.matching: calculate_fit_score, skill_gap_analysis
+       * From src.core.summarization: summarize_cv, summarize_jd, generate_strengths_and_weaknesses_summary
+       * From src.core.qa: answer_question
+       * From src.pipelines.extraction: extract_information_from_cv, extract_information_from_job_description (to get the skills
+         for the skill gap analysis).
+   * Initialize Core Components: You would initialize the RAGPipeline once and store it in Streamlit's session state
+     (st.session_state). This is crucial because it prevents the app from re-indexing the documents every time the user interacts
+     with the UI.
+
+  2. UI Layout
+
+  You would use Streamlit's functions to create the user interface:
+
+   * Title and Instructions: Use st.title() and st.write() to give your application a title and explain how to use it.
+   * File Uploaders:
+       * Use st.file_uploader() to create a widget for uploading the job description.
+       * Use another st.file_uploader() with the accept_multiple_files=True argument to allow users to upload one or more CVs.
+   * Analysis Button: A st.button("Analyze") that will trigger the main workflow.
+
+  3. The Main Workflow (When the "Analyze" button is clicked)
+
+  This is where you connect the UI to your backend logic.
+
+   1. Read Files: Get the content from the uploaded files. You'll need a utility function (like the document_parser mentioned in
+      your project plan) to handle different file types (e.g., PDF, TXT).
+
+   2. Process Job Description:
+       * Generate the embedding for the job description.
+       * Extract the required skills from the job description text.
+
+   3. Process Each CV (in a loop):
+       * For each uploaded CV:
+           * Read its text content.
+           * Generate its embedding.
+           * Extract its skills.
+           * Call calculate_fit_score() using the CV and job description embeddings.
+           * Call skill_gap_analysis() using the extracted skills from both.
+           * Call summarize_cv() for the CV.
+           * Call generate_strengths_and_weaknesses_summary() using the CV, job description, and skill analysis results.
+           * Store all these results (Fit Score, skills, summaries, etc.) for the current CV in a dictionary or a custom object.
+
+   4. Store and Display Results:
+       * After the loop, you will have a list of result objects, one for each CV.
+       * You can then sort this list by the "Fit Score" to rank the candidates.
+       * You would display the results using components like st.expander() for each candidate, showing their rank, fit score, and
+         the detailed analysis (summaries, missing skills, etc.) inside the expander.
+
+  4. The Q&A Section
+
+  This would be a separate section in your app.
+
+   * Index for Q&A: When the files are first uploaded and the "Analyze" button is clicked, you would also use your RAGPipeline
+     instance to index_documents() for all the uploaded CVs and the job description.
+   * Question Input: Use st.text_input() to create a field where the user can type their question.
+   * Answer Generation: When the user enters a question, you would call your answer_question() function, passing it the question
+     and the RAGPipeline instance from the session state.
+   * Display Answer: Display the returned answer using st.write().
+
+  By structuring your app.py this way, you create a clear, event-driven application that effectively uses all the modular pieces
+  you've built in your src directory.
