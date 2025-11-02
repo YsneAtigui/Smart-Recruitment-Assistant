@@ -234,8 +234,7 @@ def extract_information_from_jd_gemini(jd_text):
     - "location": Le lieu de travail (par ex., "Paris, France", "Télétravail complet", "Hybride (Lyon)").
     - "job_type": Le type de contrat (par ex., "CDI", "CDD", "Stage", "Freelance", "Temps partiel").
     - "responsibilities": Une liste de chaînes de caractères, où chaque chaîne est une responsabilité ou une mission clé.
-    - "required_skills": Une liste de compétences techniques ou non-techniques "obligatoires" (par ex., "Python", "React", "Gestion de projet").
-    - "preferred_skills": Une liste de compétences "préférées" ou "bonus" (par ex., "Docker", "Anglais C1").
+    - "skills" : Une liste de chaînes de caractères, où chaque chaîne est une compétence.
     - "experience_level": Une description textuelle du niveau d'expérience requis (par ex., "Junior", "Senior", "3-5 ans d'expérience", "Débutant accepté").
     - "education_requirements": Une liste de chaînes pour les diplômes ou niveaux d'étude requis (par ex., "Bac +5 en informatique", "Diplôme d'ingénieur").
 
