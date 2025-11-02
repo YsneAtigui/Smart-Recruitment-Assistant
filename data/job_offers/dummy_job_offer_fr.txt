@@ -1,0 +1,19 @@
+Titre: Développeur Python Senior
+
+Entreprise: Tech Solutions Inc.
+
+Lieu: Paris, France
+
+Description:
+Nous recherchons un développeur Python senior pour rejoindre notre équipe. Le candidat idéal aura une solide expérience dans le développement d'applications web et une connaissance approfondie de l'écosystème Python.
+
+Responsabilités:
+- Concevoir, développer et maintenir des applications web robustes.
+- Écrire du code propre, maintenable et efficace.
+- Participer aux revues de code et au mentorat des développeurs juniors.
+
+Qualifications:
+- 5+ ans d'expérience en développement Python.
+- Expérience avec des frameworks web comme Django ou Flask.
+- Solide connaissance de SQL et des bases de données relationnelles.
+- Maîtrise de Git.

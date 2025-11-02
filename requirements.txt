@@ -3,3 +3,8 @@ python-docx
 sentence-transformers
 scikit-learn
 numpy
+transformers
+torch
+accelerate
+google-generativeai
+python-dotenv

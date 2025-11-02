@@ -1,0 +1,22 @@
+Jean Dupont
+Ingénieur Logiciel
+
+Contact:
+Email: jean.dupont@example.com
+Téléphone: 06 12 34 56 78
+
+Résumé:
+Ingénieur logiciel expérimenté, passionné par le développement de programmes innovants qui accélèrent l'efficacité et le succès de l'organisation.
+
+Compétences:
+- Python
+- Java
+- C++
+- JavaScript
+- SQL
+- Git
+
+Expérience:
+Ingénieur Logiciel chez Google (2020-Présent)
+- Développement et maintenance d'applications web en utilisant Python et Django.
+- Collaboration avec des équipes inter-fonctionnelles pour définir, concevoir et livrer de nouvelles fonctionnalités.
