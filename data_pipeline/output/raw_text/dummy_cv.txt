@@ -1,0 +1,22 @@
+John Doe
+Software Engineer
+
+Contact:
+Email: john.doe@example.com
+Phone: (123) 456-7890
+
+Summary:
+Experienced software engineer with a passion for developing innovative programs that expedite the efficiency and effectiveness of organizational success.
+
+Skills:
+- Python
+- Java
+- C++
+- JavaScript
+- SQL
+- Git
+
+Experience:
+Software Engineer at Google (2020-Present)
+- Developed and maintained web applications using Python and Django.
+- Collaborated with cross-functional teams to define, design, and ship new features.

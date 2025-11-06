@@ -1,0 +1,424 @@
+Nandini
+Email : JNandini1324@gmail.com : +1 6463611031
+Profile
+Professional Summary
+• Decisive, action-oriented and results-focused professional offering around 10+ years of work
+experience in IT industry with last 4 years focused on Technical Project Manager managing of
+about 20 + resources and Over 6 years of technical experience centering on Middleware tool
+webMethods.
+• My skill set is mainly divided into 2 areas: Technical Project Management and web Methods
+/Oracle B2B technical experience.
+Management Experience (Onsite)
+• Experience in Technical Delivery, Team Leadership and Onsite-Offshore Delivery.
+• Proven ability to manage and deliver large, complex projects on time & on budget. Handled 3 to 4
+projects (management and technical) at same time integrating different middleware technologies (
+webMethods, Oracle SOA, Informatic and Dell Boomi projects)
+• Ensure software development process is followed (evaluate, specify, estimate, develop, test and
+deploy) within budget and timescale
+• Been as client relationship manager (setting expectations, harvesting new work, customer
+satisfaction and providing value add services)
+• Project Management: controlling and monitoring timelines, resource allocation, budgets, project
+costs and quality of deliverables
+• Project Initiation: project commencement tasks including participating in contract reviews,
+commercial arrangements, kick-off meetings, etc
+• Worked in UK for 3 years at client location as a Project Manager initially and later promoted to
+Client Delivery Manager.
+• Currently working from client location at US as Technical project manager, managing overall
+delivery of multiple projects and providing technical support.
+Technical Experience :
+• Have 6 years of knowledge of Software AG webMethods 8.x / 9.x product suite (Integration
+Server, MWS, Broker).
+• Expertise in the areas of developing with Service Flows, Adapter Connections (JDBC, SAP ) ,
+SOAP/REST web services.
+• Worked on Trading Networks configurations and setup (AS2- EDI, EDIFACT, XCBL) in
+webMethods.
+• Have 6 months of experience in Oracle B2B partner configuration and creating document types (
+X12, EDIFACT, XCBL, Custom documents).
+Education
+• Master of Science (M.S) in Software Engineering from BITS Pilani, work integrated program
+from Mahindra Satyam, with an aggregate of 80% in July 2010.
+• Bachelor of Technology (B. TECH) in Electronics and Communication from JNTU, Hyderabad
+with an aggregate of 78% in April 2007.
+Achievements
+• Received client appreciations for outstanding performance.
+• Achieved 100% maintenance support satisfaction from the customers.
+Employment Summary
+• Technical Project Manager at Tech Mahindra Limited from June 2007 to till date .
+Program Details:
+GE HEALTHCARE is a member of the General Electric group of companies. GE HEALTHCARE
+provides transformational medical technologies and services that are shaping a new age of patient care.
+GEHC expertise is in medical imaging and information technologies, medical diagnostics, patient
+monitoring systems, performance improvement, drug discovery, and biopharmaceutical manufacturing
+technologies to help clinicians around the world re-imagine new ways to predict, diagnose, inform and treat
+disease, so that the patients can live their lives to the fullest.
+The ICC is a Shared Service function for performing Data Integration, System Integration, Enterprise
+Application Integration (EAI) and Business to Business (B2B) Integration using Middleware.
+Project Details
+1. webMethods Remediation Project
+Organization Tech Mahindra
+Role Technical Project Manager
+Duration Jan 2017 – Till Date
+Environment Oracle SOA 12C and webMethods
+Project Description
+WebMethdos Remediation project is retirement of webMethods platform and rebuilding interfaces in
+Oracle SOA 12C. This project includes remediation of interfaces integrating with critical ERP’s ( SAP ,
+Oracle, Peoplesoft) and around 60+ trading partners using all different B2B protocols to connect . This was
+a large scale B2B migration also acknowledged by Oracle.
+Contribution
+• Responsible for the overall management and delivery of the project.
+• Prepare project plans, work with 3rd parties for project discussions and kick off.
+• Analyze webMethods Interfaces and prepare designs in SOA 12C including B2B .
+• Walk through designs with architects and take signoff.
+• Provide technical guidance to team members at project level.
+• Worked on B2B configurations for Trading partners .
+• Manage project schedules, budget forecasts, resource plans.
+• Involvement in the software development lifecycle from requirement gathering from customers,
+design .... Testing (DryRun, SIT, UAT , regression testing).
+• Produce weekly status reports to update all stakeholders on project health and progress.
+2. EHUB Retirement
+Organization Tech Mahindra
+Role Technical Project Manager
+Duration January 2016 – May 2017`
+Environment webMethods 8.x, (Integration Server, Broker, JDBC Adapter, Trading Network)
+Project Description
+The GE Healthcare Life Sciences (GEHC LS) eTrading environment (a.k.a eHub) is a central point
+handling Life Sciences exchange of business documents to and from customers in Europe and North
+America. This is also utilized in ePresence to process orders coming from the webshop.
+Main goal for the project is to replace existing legacy and aging eHub solution with reliable, scalable, and
+robustness one based on Middleware and BIOPROD.
+Contribution
+• Responsible for the overall management and delivery of the project.
+• Analyze Customer requirements and document high level requirements.
+• Resolve client issues and queries concerning business functionality requirements
+• Walk through requirement documents with customers and take signoff.
+• Serve as the main driver of the client relationship and project communication.
+• Manage project schedules, budget forecasts, resource plans.
+• Involvement in the software development lifecycle from requirement gathering from customers,
+design .... Testing (DryRun, SIT, UAT , regression testing).
+• Produce weekly status reports to update all stakeholders on project health and progress.
+• Share best practices and consulting to clients throughout duration of the project.
+3. Symphony - GE HealthCare ICC Engagement
+Organization Tech Mahindra
+Role Technical Project Manager
+Duration January 2014 – June 2016
+Environment webMethods 8.x, (Integration Server, Broker, JDBC Adapter, Trading Network)
+Project Description
+Symphony is the project to synchronize and simplify processes in our Core Imaging and PET businesses.
+Migrating to one common platform (Global SAP) for Enterprise Resource Planning will bring transparency
+and operational efficiency to our business enabling us to respond to customers with greater speed and
+agility.
+Symphony project is executed in different phases in multiple regions – Nordics, CEU, SEU, USCAN,
+ASIA.
+Most of the middleware interfaces are with webMethods technology and wM components used are Trading
+network (exchange data with External partner ) ,webservices, FTP, FTPs.
+Contribution
+• Assist the project team with identification of project deliverables, and creation of project-specific
+documentation such as functional specifications, technical specifications, etc.
+• Act as a point of technical escalation and resolution during the project lifecycle.
+• Provide technical guidance to clients and team members at program and project levels.
+• Work closely with quality assurance resources to create test plans and ensure that issues are
+properly assigned, fixed, and regressed.
+• Ensure that best practices for coding, architecture, and security are employed across all teams
+consistently, and maintain responsibility for the quality development of internal and external
+applications.
+• Provide hands-on development and mentoring as necessary for other members of the development
+team.
+4. GE Jenbacher BI Reporting
+Organization Tech Mahindra
+Role Developer
+Duration May 2013 – December 2014
+Environment webMethods 7.x, (Integration Server, Broker ,JDBC Adapter)
+Project Description
+This interface is designed and implemented to minimize the negative effects on accounting of operating
+hours, on scheduling of maintenances and cause manual rework (risk of human errors).
+Build Service based integration between Romeo ERP and MyPlant application to exchange Counter data.
+Build Romeo-MyPlant Counter Synchronous service in webMethods, which receives required parameters
+from RomeoERP and using these parameters webMethods needs to build custom MyPlant URL and send
+request to MyPlant via xml over HTTP. WebMethods will insert the response from MyPlant into Romeo
+ERP staging tables.
+Contribution
+• Create the project plan, gathering the requirements.
+• Develop the interfaces using flow service.
+• Develop the java service to implement the logic of batch insert (improved performance from 3-4
+hours to 3 mins )
+• Create Unit test plan and Integration test plan documents with sample inputs provided from client
+• Provide support during the test phase.
+• Provide Post Production support after the completion of the project for 3 weeks
+5. BPM CoE, GE
+Organization Tech Mahindra
+Role Architect
+Duration April 2012 – May 2013
+Environment webMethods 8.x, (Integration Server, Broker , BPMS, JDBC Adapter)
+a) Project Description
+Designed the below projects as part of BPM CoE team and worked on BAM and Blaze Advisor POCs.
+1) PGS R5 Site Compensation
+Site Compensation is a Support Central workflow to place a request for Field Engineers Bonus
+compensation upon successful completion of an outage. Current process makes the Users to
+manually enter all the outage and Bonus details by looking at various systems. All these
+information is available in PGS Portal Application. Also the support Central workflow is not
+robust for automation and reporting for changing Business needs. Business needs to develop this
+workflow within the PGS Portal Application to automate the workflow initiation steps and
+leverage the PGS Portal Building blocks data to auto populate workflow information where ever
+possible, thus reducing human intervention.
+2) Catalog Automation
+The Catalog Automation project goal is to automate the existing process by removing the manual
+touch points, streamlining the process steps and moving the data from existing MS excels to a web
+based system. The purpose of this project is to create a workflow that manages the Catalog
+Automation Process Application. Maintain a constant communication with the Catalog
+Application trough human or manual tasks, regarding the roles of ATA Owner, Risk admin, Super
+User, based on the process steps and situations. Communicate with a Catalog Data base, to update
+the ATA information.
+b) Contribution
+• Design the Projects.
+• Understand the Functional Specs; provide feedback to Business Analyst Team if the Requirements
+can be implemented successfully.
+6. Project Name: BDMD EAI Operations
+Client GE Energy
+Role Administrator
+Organization Tech Mahindra
+Duration September 2011 – February 2012
+Team Size Pro ject :10 Module : 2
+Environment Software Tools: WebMethods Integration Server Platform, webMethods
+Developer7.1.3, webMethods Trading Network Console, adapter
+Configuration, My webMethods Server, webMethods Monitor 7.1.3.
+DB: Oracle
+O/s: Win NT Server 4.0
+a) Project Description:
+The integration solution involving webMethods in GE power Systems involves over 4000 adapters and 125
+brokers. The BDMD EAI Operations which is currently one of the major projects in GE Power Systems
+integrates the existing legacy systems using Oracle, Mainframes, Sybase etc as databases with applications
+like PartsERP, PartsServieERP, ESERP, CPFinERP, Vastera, Oracle ErrorHandler and AERO using Java
+and other web applications. The Middleware software is developed using WebMethods. Active works aids
+in using the existing databases with the newly developed applications, thus providing a reliable availability
+of the data. This allows the users in various locations of GE across US and rest of the world to access
+required information from various applications using different databases.
+b) Contribution:
+• Analysis and understand the business flow of technical services operation.
+• Understand the complete process of log, track and resolve customer issues.
+• Understanding of the process and fixing bugs
+• Actively involved in conducting various forms of testing of the middleware with the applications
+across various locations of GE and perform any required bug fixing.
+• Providing Production Support for Integrations. Monitoring the ATC log tables to find out the errors
+logged as part of Support.
+• Migration of the integration components from one environment to other.
+7. Project Name: SSP5-SAPRepairs BPM integration
+Client GE Energy
+Role Developer
+Organization Tech Mahindra
+Duration July 2011 to September 2011
+Team Size Pro ject :2 Module : 1
+Environment Software Languages : webMethods flow language, Java
+Database :Oracle 12i
+EAI: webMethods 7x and 8x version (Integration server. Developer, Broker
+Servers, Monitor),BPM
+Adapters: SAP Adapter
+O/s : Solaris
+a) Project Description
+This project requires an interface to send Purchase Order and Receipt data to SAP Repairs system
+using SAP Adapter Service. SSP5 is the source system responsible to send Purchase Order and
+Receipt to webMethods Integration layer via webMethods Trading Networks.
+As part of this project, webMethods Business Process Models has been developed to consume
+Purchase Order & Receipt from SSP5 and send the data to SAP Repairs system via webMethods SAP
+adapter.
+b) Contribution
+• Designed the business process and the services/operations using webMethods to streamline the
+processes involved
+• Taking care of all migration process in all the environments.
+• Problem solving and bug fixing
+• Monitoring process model status.
+8. Project Name: SFDC Oil&Gas interface
+Client GE Energy
+Role Developer
+Organization Tech Mahindra
+Duration November 2010 to June 2011
+Team Size Pro ject :1 Module : 1
+Environment Software Languages : WebMethods flow language, Java
+Database :Oracle 12i
+EAI: webMethods 7.1.2 version (Integration server. Developer, Broker
+Servers, Monitor)
+Adapters:JDBC Adapter
+Tools : Document Tracker, Tortoise CVS version
+1.8.14,Database Pilot, WebMethods Monitor 7.1.2,webMethods Developer
+O/s : Solaris
+a) Project Description
+GE Energy’s current CRM platform has reached end of life. It does not satisfy the needs of the
+various P&L’s within Energy and the ability to remain nimble and incorporate the various needs of
+the business is no longer achievable. The business has decided to move to Salesforce.com and we
+need to integrate to and from systems that provide necessary data to be used with CRM.
+This includes the development of SFDC Source integrationwhich replaces CMS and publishes data to
+15 targets. As a part of source integration, a webMethods provides the WSDL file to receive SFDC
+XML file .Received XML is converted into webMethods internal document type and mapped to
+canonical, and published to broker.Published canonical is subscribed by 4 existing targets at present.
+In future, we extend the SFDC integration to publish data to few more existing subscribers.
+b) Contribution
+• Create the project plan, gathering the requirements.
+• Develop the interfaces using flow service, create utility services, webservice Descriptors .
+• Create Unit test plan and Integration test plan documents with sample inputs provided from client
+• Provide support during the test phase.
+• Provide Post Production support after the completion of the project for 3 weeks
+9. Project Name: EDI210 OUTBOUND for OTM
+Client GE Energy
+Role Developer
+Organization Tech Mahindra
+Duration June 2010 to December 2010
+Team Size Pro ject :2 Module : 1
+Environment Software Languages : WebMethods flow language, Java
+Database :Oracle 11g
+EAI: webMethods 7.1.2 version (Integration server. Developer, Broker
+Servers, Monitor, Trading Networks)
+Adapters:JDBC Adapter
+Tools : Document Tracker, Tortoise CVS version
+1.8.14,Database Pilot, WebMethods Monitor 7.1.2,webMethods Developer
+O/s : Solaris
+a) Project Description
+GE Energy Infrastructure has created an umbrella project, the vision for which includes each GEI P&L to have EDI210
+outbound integration with OTM.
+This includes the development of two integrations (source and target integrations).As a part of source integration, a
+webMethods provides the WSDL file to receive Glog XML file from OTM.Received Glog XML is converted into
+webMethods internal document type and mapped to canonical, and published to broker.WebMethods target integration
+subscribes the published canonical from webMethods broker and generates EDI210 files as per standard EDI210 schema.
+The generated EDI210 files are sent to Trax system through trading networks via AS2 protocol.
+Trax system will send the 997 ack back to webMethods with the status of EDI210 files. WebMethods validate the
+received 997 files and send the 997’s with rejected status, to OTM.OTM cross checks the rejected EDI210 files and
+resends the valid data.
+b) Contribution
+• Gather requirements, analyze the existing canonicals.
+• Develop the interfaces using flow service, create utility services, webService Descriptors..
+• Create Unit test plan and Integration test plan documents with sample inputs provided from client.
+• Prepare all project related documents.
+• Provide testing support in different environments.
+10. Project Name: GE Aviation PAC-Purchasing Application Consolidation Project
+Client GE Aviation
+Role Developer
+Organization Tech Mahindra
+Duration February 2010 to November 2010
+Team Size Pro ject :1 Module : 1
+Environment Software Languages : WebMethods flow language, Java
+Database :Oracle 12i
+EAI: webMethods 7.1.2 version (Integration server. Developer, Broker
+Servers, Monitor)
+Adapters:JDBC Adapter
+Tools : Document Tracker, Tortoise CVS version
+1.8.14,Database Pilot, WebMethods Monitor 7.1.2,webMethods Developer
+O/s : Solaris
+a) Project Description
+GE Aviation Supply Chain business is consolidating its Legacy Purchasing applications in to a single
+Oracle eBusiness suite to manage and author the purchase orders. This requires building webMethods
+integrations to exchange PO, Supplier, Item data between central Oracle eBusiness suite and 22
+Legacy applications/ERPs. For pilot implementation, Grand Rapids Legacy system is chosen. The
+scope of the project is to build integrations from PAC Oracle 12i instance to Grand Rapids Legacy
+system and vice-versa. There are total 21 Legacy systems need to be integrated with PAC instance.
+b) Contribution
+• Create the project plan, gathering the requirements.
+• Develop the interfaces using flow service, create utility services, webservice Descriptors and
+also implemented HTTP post.
+• Create Unit test plan and Integration test plan documents with sample inputs provided from client
+• Provide support during the test phase.
+• Provide Post Production support after the completion of the project for 3 weeks
+11. Project Name: GE Energy Fusion Project
+Client GE Energy
+Role Developer
+Organization Tech Mahindra
+Duration December 2009 to March 2010
+Team Size Pro ject :3 Module : 1
+Environment Software EAI: webMethods 6.1 & 6.5 platform (Integration server. Developer,
+Trading Networks 6.5, Broker Servers, Monitor)
+Adapters:JDBCAdapter
+Tools : Document Tracker, WmMonitor, WmBrokerAdmin, Trading
+Networks Console, Oracle 9i, Tortoise CVS version1.4.5
+a) Project Description
+This Integration is built to transport data from JULIET ERP to GEXPRO.It is implemented ONLY for
+OU_PG_WIND and OU_PG_CAN operating units. This connection will communicate purchase orders
+between the two systems.
+Built EDI outbound integration to send EDI850 (Purchase Order) data to the partner and EDI inbound
+integration to receive EDI997 (Acknowledgement) from the partner.
+b) Contribution
+• Create the technical design of EDI850 and EDI997 basing on the requirements gathered (this
+interface was split into publish and subscribing integrations).
+• Create partner profiles and processing rules in trading networks.
+• Develop the interfaces using flow service, create utility services.
+• Create Unit and Integration test plan documents using the sample inputs provided by the
+client.
+• Provide support during the test phase.
+• Provide Post Production support after the completion of the project for 3 weeks
+12. Project Name: GE Energy JENBACHER-SPATSL Project
+Client GE Energy
+Role Developer
+Organization Tech Mahindra
+Duration December 2009 to February 2010
+Team Size Project :1 Module : 1
+Environment Software Languages : WebMethods flow language, Java
+Database :Oracle 9i
+EAI: webMethods 6.1.1 version (Integration server. Developer, Broker
+Servers, Monitor)
+Adapters:JDBC Adapter
+Tools : Document Tracker, Tortoise CVS version
+1.8.14,Database Pilot, WebMethods Monitor 6.1.1,webMethods
+Developer
+O/s : Solaris
+a) Project Description
+The primary objective of the Oracle SPATSL Interface integration is to publish Item, sBOM data from
+Oracle to SPATSL database. On user button press in Romeo ERP to release the Design, the BOM data
+need to be synchronized with SPATL MS SQL Server database in real-time. This process cannot run
+in Batch mode.
+b) Contribution
+• Create the project plan, gather the requirements.
+• Create technical design documents.
+• Develop the interfaces using flow service, create utility services.
+• Create Unit test plan and Integration test plan documents with sample inputs provided from
+client.
+• Configure adapters for DB2, MSSQL.
+13. Project Name: GE Energy JENBACHER-SMARTEAM Phase II Project
+Client GE Energy
+Role Developer
+Organization Tech Mahindra
+Duration June 2009 to February 2010
+Team Size Project :1 Module : 1
+Environment Software Languages : WebMethods flow language, Java
+Database :Oracle 9i
+EAI: webMethods 6.1.1 version (Integration server. Developer, Broker
+Servers, Monitor)
+Adapters:JDBC Adapter
+Tools : Document Tracker, Tortoise CVS version
+1.8.14,Database Pilot, WebMethods Monitor 6.1.1,webMethods
+Developer
+O/s : Solaris
+a) Project Description
+The objective of this project is to synchronize Item details both in JENERP and SMARTEAM system.
+After this integration, all the item information will also be maintained in SmarTeam system and there will
+be no manual intervention required for synchronizing it in the two systems. Implemented the design in 12
+integrations (pub and sub model) including the ack integrations
+b) Contribution
+• Update the technical design for 12 different integrations.
+• Develop the interfaces using flow service, creating utility services
+• Create Unit test plan and Integration test plan documents with sample inputs provided from client
+• Provide support during the test phase.
+• Provide Post Production support after the completion of the project for 3 weeks.
+14. Project Name: eCustomer Project
+Client Cisco Systems Inc. USA
+Role Developer
+Organization Tech Mahindra
+Duration October,2007 – May,2009
+Team Size Project :8 Module : 1
+Environment Software Languages : Tibco flow language, Java
+Database :Oracle 9i
+EAI: TIBCO Designer, and TIBCO Business Works
+Adapters:JDBC Adapter
+Tools : EMAN monitoring tool
+O/s : Linux OS
+a) Project Description
+Any new customer created in Cisco would be added in to the database. Client system sends a request to
+Customer Registry (CR) Customer create/update/assign/delete/inactivate. The client system decides the
+type of operation to be performed like Customer Create/Update/Delete/Inactivate and sends the request
+message to the respective messaging queue. This interface does the creation of new party and updates
+any information of the existing party, inactive a party, delete the party physically from CR and Assign
+the party in SSOT before being created in source system image.
+b) Contribution
+• Handle all P1 to P6 cases and providing RCA and LTF
+Personal Information:
+Name : Jayanandini Pobbathi
+Languages Known : English, Telugu, and Hindi
+Alternate Email : JNandini1324@gmail.com
+Passport No. : P2903133
+US Work Permit : H1 B
+Contact Number : +1 6463610131
