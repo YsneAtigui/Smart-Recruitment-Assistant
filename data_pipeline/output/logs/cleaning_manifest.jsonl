@@ -1,0 +1,50 @@
+[
+  {
+    "filename":"Analyzer Test Resume .txt",
+    "id":"Analyzer Test Resume ",
+    "chars":1542,
+    "words":218,
+    "lines":49,
+    "timestamp":"2025-11-06T15:40:43.705189"
+  },
+  {
+    "filename":"dummy_cv.txt",
+    "id":"dummy_cv",
+    "chars":516,
+    "words":71,
+    "lines":22,
+    "timestamp":"2025-11-06T15:40:43.707972"
+  },
+  {
+    "filename":"Francis Gomes Resume.txt",
+    "id":"Francis Gomes Resume",
+    "chars":8607,
+    "words":1159,
+    "lines":133,
+    "timestamp":"2025-11-06T15:40:43.755071"
+  },
+  {
+    "filename":"Mitali Barman_Resume.txt",
+    "id":"Mitali Barman_Resume",
+    "chars":12825,
+    "words":1803,
+    "lines":189,
+    "timestamp":"2025-11-06T15:40:43.804248"
+  },
+  {
+    "filename":"Nandini_Resume.txt",
+    "id":"Nandini_Resume",
+    "chars":24037,
+    "words":3541,
+    "lines":424,
+    "timestamp":"2025-11-06T15:40:43.888287"
+  },
+  {
+    "filename":"OmkarResume.txt",
+    "id":"OmkarResume",
+    "chars":4573,
+    "words":215,
+    "lines":111,
+    "timestamp":"2025-11-06T15:40:43.900665"
+  }
+]

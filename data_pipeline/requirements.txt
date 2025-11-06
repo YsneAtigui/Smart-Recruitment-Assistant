@@ -1,0 +1,21 @@
+# --- Phase 2: Extraction ---
+pdfplumber
+pymupdf          # alias: PyMuPDF
+pytesseract
+pillow
+docx2txt
+
+# --- Phase 3: Preprocessing ---
+nltk
+spacy
+unidecode
+regex
+
+# --- Phase 4: NER / semantic extraction ---
+transformers     # pour BERT ou CamemBERT
+torch            # backend pour transformers
+pandas           # pour manipuler les entités extraites
+
+# --- Phase 10 (partial): Storage ---
+sqlite-utils     # pratique pour SQLite
+python-dotenv    # pour gérer chemins/env variables
