@@ -1,7 +1,0 @@
-filename,method,language,chars,words,quality_score,timestamp
-Analyzer Test Resume .pdf,pdfplumber,en,1542,218,1.73,2025-11-06T18:50:07.885273
-dummy_cv.txt,plain_text,en,516,71,0.55,2025-11-06T18:50:07.898674
-Francis Gomes Resume.pdf,pdfplumber,en,8607,1159,9.42,2025-11-06T18:50:08.830661
-Mitali Barman_Resume.pdf,pdfplumber,en,12825,1803,14.98,2025-11-06T18:50:09.712986
-Nandini_Resume.pdf,pdfplumber,en,24037,3541,28.45,2025-11-06T18:50:11.978435
-OmkarResume.pdf,pdfplumber,en,4573,215,1.87,2025-11-06T18:50:12.417029
