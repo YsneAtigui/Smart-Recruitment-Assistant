@@ -73,10 +73,20 @@ def extract_information_from_cv_gemini(cv_text):
     try:
         response = genai_model.generate_content(prompt)
         
-        # Clean the response to get only the JSON part.
-        # The model sometimes includes ```json markdown.
-        cleaned_response = re.sub(r'```json\n(.*?)\n```', r'\1', response.text, flags=re.DOTALL)
+        # Clean the response to get only the JSON part
+        response_text = response.text.strip()
         
+        # Remove markdown code fences if present
+        if response_text.startswith('```'):
+            # Remove opening fence
+            response_text = re.sub(r'^```(?:json)?\s*\n', '', response_text)
+            # Remove closing fence
+            response_text = re.sub(r'\n```\s*$', '', response_text)
+        
+        # Strip any remaining whitespace
+        cleaned_response = response_text.strip()
+        
+        # Try to parse the JSON
         extracted_data = json.loads(cleaned_response)
         return extracted_data
     except json.JSONDecodeError as e:
@@ -138,10 +148,20 @@ def extract_information_from_jd_gemini(jd_text):
     try:
         response = genai_model.generate_content(prompt)
         
-        # Nettoie la réponse pour n'obtenir que le JSON.
-        # Le modèle inclut parfois le markdown ```json.
-        cleaned_response = re.sub(r'```json\n(.*?)\n```', r'\1', response.text, flags=re.DOTALL)
+        # Clean the response to get only the JSON part
+        response_text = response.text.strip()
         
+        # Remove markdown code fences if present
+        if response_text.startswith('```'):
+            # Remove opening fence
+            response_text = re.sub(r'^```(?:json)?\s*\n', '', response_text)
+            # Remove closing fence
+            response_text = re.sub(r'\n```\s*$', '', response_text)
+        
+        # Strip any remaining whitespace
+        cleaned_response = response_text.strip()
+        
+        # Try to parse the JSON
         extracted_data = json.loads(cleaned_response)
         return extracted_data
     except json.JSONDecodeError as e:
