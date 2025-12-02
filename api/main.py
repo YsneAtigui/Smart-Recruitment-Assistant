@@ -6,7 +6,9 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import logging
 
-from api.routes import upload, matching, rag, summarization
+from api.routes import upload, matching, rag, summarization, database, candidates
+from api.database import engine, Base
+from api import models  # Import models to register them
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -18,6 +20,14 @@ app = FastAPI(
     description="REST API for CV and Job Description matching, analysis, and Q&A",
     version="1.0.0"
 )
+
+# Initialize database tables
+@app.on_event("startup")
+def startup_event():
+    """Create database tables on startup"""
+    logger.info("Creating database tables...")
+    Base.metadata.create_all(bind=engine)
+    logger.info("Database initialized successfully")
 
 # Configure CORS for React frontend
 app.add_middleware(
@@ -38,6 +48,8 @@ app.include_router(upload.router, prefix="/api", tags=["Upload"])
 app.include_router(matching.router, prefix="/api", tags=["Matching"])
 app.include_router(rag.router, prefix="/api", tags=["RAG"])
 app.include_router(summarization.router, prefix="/api", tags=["Summarization"])
+app.include_router(database.router, prefix="/api", tags=["Database"])
+app.include_router(candidates.router, tags=["Candidates"])
 
 @app.get("/")
 async def root():

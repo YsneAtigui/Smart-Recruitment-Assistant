@@ -28,7 +28,7 @@ def summarize_cv(cv_text):
     if not genai_model:
         return "Summarization is disabled because the Gemini model is not configured."
 
-    prompt_instruction = "Résumez ce CV en quelques phrases, en mettant en évidence l'expérience et les compétences clés du candidat."
+    prompt_instruction = "Summarize this CV in 2-3 short sentences maximum, highlighting only the candidate's key experience and skills."
     prompt = f"{prompt_instruction}\n\n---\n{cv_text}\n---"
 
     try:
@@ -50,7 +50,7 @@ def summarize_jd(jd_text):
     if not genai_model:
         return "Summarization is disabled because the Gemini model is not configured."
 
-    prompt_instruction = "Résumez cette description de poste en quelques phrases, en soulignant les principales responsabilités et les qualifications requises."
+    prompt_instruction = "Summarize this job description in 2-3 short sentences maximum, highlighting only the main responsibilities and required qualifications."
     prompt = f"{prompt_instruction}\n\n---\n{jd_text}\n---"
 
     try:
@@ -76,7 +76,7 @@ def generate_strengths_and_weaknesses_summary(cv_text, job_offer_text, matched_s
         return "Summarization is disabled because the Gemini model is not configured."
 
     prompt = f"""
-    En tant que recruteur expert, analysez le CV et l'offre d'emploi fournis afin de dresser un résumé des points forts et des points faibles du candidat pour ce poste spécifique.
+    As an expert recruiter, analyze the provided CV and job offer to create a BRIEF and CONCISE summary of the candidate's strengths and weaknesses for this specific position.
 
     **Job Offer:**
     {job_offer_text}
@@ -88,10 +88,10 @@ def generate_strengths_and_weaknesses_summary(cv_text, job_offer_text, matched_s
     - Matched Skills: {', '.join(matched_skills)}
     - Missing Skills: {', '.join(missing_skills)}
 
-    À partir de ces informations, veuillez fournir un résumé concis mettant en évidence:
+    Based on this information, provide a VERY SHORT summary (maximum 4-5 sentences total) highlighting:
 
-1. **Points forts :** En quoi le candidat correspond au poste, en vous concentrant sur son expérience et ses compétences requises.
-2. **Points faibles :** Quelles compétences ou expériences le candidat ne possède pas pour ce poste, en vous basant sur les compétences manquantes.
+1. **Strengths:** In 2 sentences maximum, how the candidate fits the position.
+2. **Weaknesses:** In 2 sentences maximum, what skills or experience the candidate lacks.
     """
 
     try:

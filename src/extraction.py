@@ -76,24 +76,42 @@ def extract_information_from_cv_gemini(cv_text):
         # Clean the response to get only the JSON part
         response_text = response.text.strip()
         
-        # Remove markdown code fences if present
-        if response_text.startswith('```'):
-            # Remove opening fence
-            response_text = re.sub(r'^```(?:json)?\s*\n', '', response_text)
-            # Remove closing fence
-            response_text = re.sub(r'\n```\s*$', '', response_text)
+        # Remove markdown code fences if present (handles ```json and ```)
+        if '```' in response_text:
+            # Extract content between code fences
+            match = re.search(r'```(?:json)?\s*\n(.*?)\n```', response_text, re.DOTALL)
+            if match:
+                response_text = match.group(1)
+            else:
+                # Fallback: remove fences line by line
+                response_text = re.sub(r'^```(?:json)?\s*\n', '', response_text, flags=re.MULTILINE)
+                response_text = re.sub(r'\n```\s*$', '', response_text, flags=re.MULTILINE)
         
         # Strip any remaining whitespace
         cleaned_response = response_text.strip()
+        
+        # Additional cleaning: remove trailing whitespace from each line
+        lines = cleaned_response.split('\n')
+        cleaned_lines = [line.rstrip() for line in lines]
+        cleaned_response = '\n'.join(cleaned_lines)
         
         # Try to parse the JSON
         extracted_data = json.loads(cleaned_response)
         return extracted_data
     except json.JSONDecodeError as e:
-        error_msg = f"Failed to parse JSON from Gemini response: {e}"
-        if 'response' in locals():
-            error_msg += f"\n--- Raw Response ---\n{response.text}\n-------------------"
-        raise RuntimeError(error_msg)
+        # Try one more time with aggressive cleaning
+        try:
+            # Remove all trailing whitespace and fix common JSON issues
+            cleaned = re.sub(r',\s*}', '}', cleaned_response)  # Remove trailing commas before }
+            cleaned = re.sub(r',\s*]', ']', cleaned)  # Remove trailing commas before ]
+            extracted_data = json.loads(cleaned)
+            logger.warning("Successfully parsed JSON after aggressive cleaning")
+            return extracted_data
+        except json.JSONDecodeError:
+            error_msg = f"Failed to parse JSON from Gemini response: {e}"
+            if 'response' in locals():
+                error_msg += f"\n--- Raw Response ---\n{response.text}\n-------------------"
+            raise RuntimeError(error_msg)
     except Exception as e:
         error_msg = f"Gemini API error during CV extraction: {str(e)}"
         if 'response' in locals() and hasattr(response, 'text'):
@@ -151,27 +169,44 @@ def extract_information_from_jd_gemini(jd_text):
         # Clean the response to get only the JSON part
         response_text = response.text.strip()
         
-        # Remove markdown code fences if present
-        if response_text.startswith('```'):
-            # Remove opening fence
-            response_text = re.sub(r'^```(?:json)?\s*\n', '', response_text)
-            # Remove closing fence
-            response_text = re.sub(r'\n```\s*$', '', response_text)
+        # Remove markdown code fences if present (handles ```json and ```)
+        if '```' in response_text:
+            # Extract content between code fences
+            match = re.search(r'```(?:json)?\s*\n(.*?)\n```', response_text, re.DOTALL)
+            if match:
+                response_text = match.group(1)
+            else:
+                # Fallback: remove fences line by line
+                response_text = re.sub(r'^```(?:json)?\s*\n', '', response_text, flags=re.MULTILINE)
+                response_text = re.sub(r'\n```\s*$', '', response_text, flags=re.MULTILINE)
         
         # Strip any remaining whitespace
         cleaned_response = response_text.strip()
+        
+        # Additional cleaning: remove trailing whitespace from each line
+        lines = cleaned_response.split('\n')
+        cleaned_lines = [line.rstrip() for line in lines]
+        cleaned_response = '\n'.join(cleaned_lines)
         
         # Try to parse the JSON
         extracted_data = json.loads(cleaned_response)
         return extracted_data
     except json.JSONDecodeError as e:
-        error_msg = f"Failed to parse JSON from Gemini response: {e}"
-        if 'response' in locals():
-            error_msg += f"\n--- Raw Response ---\n{response.text}\n-------------------"
-        raise RuntimeError(error_msg)
+        # Try one more time with aggressive cleaning
+        try:
+            # Remove all trailing whitespace and fix common JSON issues
+            cleaned = re.sub(r',\s*}', '}', cleaned_response)  # Remove trailing commas before }
+            cleaned = re.sub(r',\s*]', ']', cleaned)  # Remove trailing commas before ]
+            extracted_data = json.loads(cleaned)
+            logger.warning("Successfully parsed JSON after aggressive cleaning")
+            return extracted_data
+        except json.JSONDecodeError:
+            error_msg = f"Failed to parse JSON from Gemini response: {e}"
+            if 'response' in locals():
+                error_msg += f"\n--- Raw Response ---\n{response.text}\n-------------------"
+            raise RuntimeError(error_msg)
     except Exception as e:
         error_msg = f"Gemini API error during job description extraction: {str(e)}"
         if 'response' in locals() and hasattr(response, 'text'):
             error_msg += f"\n--- Response Text ---\n{response.text}\n-------------------"
         raise RuntimeError(error_msg)
-

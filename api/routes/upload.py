@@ -63,6 +63,39 @@ async def upload_cv(file: UploadFile = File(...)):
             cv_id = file.filename
             cv_storage[cv_id] = cv_data
             
+            # **AUTO-INDEX TO CHROMADB**
+            try:
+                from src.ai.rag import RAGPipeline
+                from datetime import datetime
+                
+                # Create unique candidate ID from email or name
+                candidate_id = cv_data.get("email", "") or cv_data.get("name", file.filename).replace(" ", "_").lower()
+                
+                # Index CV for RAG
+                collection_name = f"cv_{candidate_id.replace('@', '_').replace('.', '_').replace('-', '_')}"
+                rag_pipeline = RAGPipeline(
+                    collection_name=collection_name,
+                    persist_directory="./chroma_db"
+                )
+                
+                rag_pipeline.index_documents(
+                    documents=[cv_text],
+                    metadatas=[{
+                        "candidate_id": candidate_id,
+                        "candidate_name": cv_data.get("name", "Unknown"),
+                        "filename": file.filename,
+                        "indexed_at": datetime.now().isoformat(),
+                        "type": "cv"
+                    }]
+                )
+                
+                logger.info(f"Successfully indexed CV to ChromaDB: {cv_data.get('name', file.filename)}")
+                cv_data["chromadb_indexed"] = True
+                cv_data["chromadb_collection"] = collection_name
+            except Exception as index_error:
+                logger.warning(f"Failed to index CV to ChromaDB: {index_error}")
+                cv_data["chromadb_indexed"] = False
+            
             logger.info(f"Successfully processed CV: {file.filename}")
             
             return UploadStatusResponse(
@@ -129,12 +162,53 @@ async def upload_job_description(file: UploadFile = File(...)):
             jd_id = file.filename
             jd_storage[jd_id] = jd_data
             
+            # **AUTO-INDEX TO CHROMADB**
+            try:
+                from src.ai.rag import RAGPipeline
+                from datetime import datetime
+                
+                # Index JD in a dedicated collection
+                rag_pipeline = RAGPipeline(
+                    collection_name="job_descriptions",
+                    persist_directory="./chroma_db"
+                )
+                
+                # Get job title safely
+                job_title = jd_data.get("job_title") or "unknown"
+                job_id = f"jd_{job_title.replace(' ', '_').lower()}_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+                
+                rag_pipeline.index_documents(
+                    documents=[jd_text],
+                    metadatas=[{
+                        "job_id": job_id,
+                        "job_title": job_title,
+                        "company": jd_data.get("company_name") or "Unknown",
+                        "filename": file.filename,
+                        "indexed_at": datetime.now().isoformat(),
+                        "type": "job_description"
+                    }]
+                )
+                
+                logger.info(f"Successfully indexed JD to ChromaDB: {jd_data.get('job_title', file.filename)}")
+                jd_data["chromadb_indexed"] = True
+            except Exception as index_error:
+                logger.warning(f"Failed to index JD to ChromaDB: {index_error}")
+                jd_data["chromadb_indexed"] = False
+            
             logger.info(f"Successfully processed JD: {file.filename}")
             
-            # Map to frontend format
+            # Validate extracted data and provide fallbacks
+            job_title = jd_data.get("job_title") or "Unknown Position"
+            company_name = jd_data.get("company_name") or "Unknown Company"
+            
+            # If both are unknown, this might be a CV uploaded as JD
+            if job_title == "Unknown Position" and company_name == "Unknown Company":
+                logger.warning(f"Could not extract job information from {file.filename}. This might be a CV file uploaded as a job description.")
+            
+            # Map to frontend format with validated data
             return JobDescriptionResponse(
-                title=jd_data.get("job_title", "Unknown Position"),
-                company=jd_data.get("company_name", "Unknown Company"),
+                title=job_title,
+                company=company_name,
                 requiredSkills=jd_data.get("skills", []),
                 minExperience=jd_data.get("experience_level", 0) if isinstance(jd_data.get("experience_level"), int) else 0,
                 rawText=jd_text

@@ -75,3 +75,30 @@ class RAGQueryRequest(BaseModel):
     candidateId: str
     candidateName: str
     query: str
+
+# ========== Database Management Schemas ==========
+class CollectionInfoResponse(BaseModel):
+    """Collection information response"""
+    name: str
+    document_count: int
+    metadata: Optional[Dict[str, Any]] = {}
+    exists: bool = True
+
+class IndexedDocumentResponse(BaseModel):
+    """Indexed document information"""
+    id: str
+    metadata: Dict[str, Any]
+    preview: Optional[str] = None
+
+class DatabaseStatsResponse(BaseModel):
+    """Database statistics response"""
+    total_collections: int
+    total_documents: int
+    collections: List[CollectionInfoResponse]
+    persist_directory: Optional[str] = None
+
+class ClearCollectionResponse(BaseModel):
+    """Response for clearing a collection"""
+    status: str
+    message: str
+    collection_name: str

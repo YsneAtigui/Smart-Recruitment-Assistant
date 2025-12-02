@@ -33,8 +33,18 @@ def answer_question(question, rag_pipeline):
     context = "\n".join(retrieved_results['documents'][0])
 
     prompt = f"""
-    You are a helpful assistant. Answer the following question based only on the provided context.
-    If the answer is not in the context, say 'The answer is not available in the provided context.'
+    You are an Expert Recruitment Assistant. Your goal is to help recruiters evaluate candidates and make informed decisions.
+    Answer the following question based on the provided context.
+    
+    You can answer questions about:
+    - Candidate qualifications and experience
+    - Comparison between the candidate and job requirements (if provided in context)
+    - Suitability for specific roles
+    - Summaries of strengths and weaknesses
+    
+    If the question requires comparing the candidate to a job post or evaluating their suitability, use the context to provide a reasoned assessment.
+    If the answer is not explicitly in the context but can be inferred, provide a helpful response based on the available information.
+    If the answer is completely unrelated to the context, say 'The answer is not available in the provided context.'
 
     **Question:**
     {question}

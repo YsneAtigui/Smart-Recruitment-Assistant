@@ -1,0 +1,5 @@
+{
+  "name": "SmartRecruit AI",
+  "description": "An AI-powered recruitment platform connecting recruiters with top talent through intelligent matching, skill gap analysis, and RAG-based insights.",
+  "requestFramePermissions": []
+}
