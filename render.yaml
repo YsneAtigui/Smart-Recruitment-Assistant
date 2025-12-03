@@ -1,0 +1,160 @@
+# Render Blueprint for Smart Recruitment Assistant
+# This file automates deployment of both backend and frontend services
+
+services:
+  # ========================================
+  # Backend API Service (FastAPI)
+  # ========================================
+  - type: web
+    name: smartrecruit-api
+    runtime: python
+    region: oregon  # Choose: oregon, frankfurt, singapore, ohio
+    plan: free
+    branch: main
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn api.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      # IMPORTANT: Add your actual Gemini API key in Render Dashboard
+      # Go to: Service Settings → Environment → Edit
+      - key: GEMINI_API_KEY
+        sync: false  # Must be set manually in dashboard for security
+      
+      - key: PYTHON_VERSION
+        value: 3.9.18
+      
+      - key: DATABASE_URL
+        value: sqlite:///./recruitment.db
+      
+      - key: CHROMA_PERSIST_DIR
+        value: ./chroma_db
+    
+    # Auto-deploy on git push
+    autoDeploy: true
+
+  # ========================================
+  # Frontend Static Site (React + Vite)
+  # ========================================
+  - type: web
+    name: smartrecruit-frontend
+    runtime: static
+    region: oregon  # Should match backend region for lower latency
+    plan: free
+    branch: main
+    buildCommand: cd app && npm ci && npm run build
+    staticPublishPath: ./app/dist
+    
+    # Pull routes configuration
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    
+    envVars:
+      # Automatically use the backend service URL
+      - key: VITE_API_URL
+        fromService:
+          type: web
+          name: smartrecruit-api
+          envVarKey: RENDER_EXTERNAL_URL
+    
+    # Auto-deploy on git push
+    autoDeploy: true
+
+# ========================================
+# Notes on Free Tier Deployment
+# ========================================
+# 
+# 1. SERVICES SLEEP: Both services sleep after 15 minutes of inactivity
+#    - First request takes 30-60 seconds to wake up
+#    - Subsequent requests are fast
+#
+# 2. DATA PERSISTENCE: 
+#    - Free tier uses ephemeral storage
+#    - Database and ChromaDB reset on each deployment/restart
+#    - For persistent storage, upgrade to paid plan with disk
+#
+# 3. AUTO-DEPLOY:
+#    - Services auto-deploy when you push to main branch
+#    - Can disable by setting autoDeploy: false
+#
+# 4. ENVIRONMENT VARIABLES:
+#    - GEMINI_API_KEY must be set manually in Render Dashboard
+#    - Other variables are set automatically
+#    - Frontend automatically gets backend URL
+#
+# 5. REGIONS:
+#    - oregon: US West (default, good for Americas)
+#    - frankfurt: Europe (good for EU/Africa)
+#    - singapore: Asia Pacific (good for Asia)
+#    - ohio: US East (good for East Coast)
+#
+# ========================================
+# Deployment Instructions
+# ========================================
+#
+# STEP 1: Push this file to GitHub
+#   git add render.yaml
+#   git commit -m "add: render deployment configuration"
+#   git push origin main
+#
+# STEP 2: Deploy on Render
+#   1. Go to https://dashboard.render.com
+#   2. Click "New +" → "Blueprint"
+#   3. Connect your GitHub repository
+#   4. Render will detect this file and create both services
+#
+# STEP 3: Add Your API Key
+#   1. Go to smartrecruit-api service
+#   2. Click "Environment" in left sidebar
+#   3. Find GEMINI_API_KEY
+#   4. Click "Edit" and add your actual API key
+#   5. Click "Save Changes"
+#
+# STEP 4: Wait for Deployment
+#   - Backend: 3-5 minutes
+#   - Frontend: 2-3 minutes
+#   - Frontend will automatically use backend URL
+#
+# STEP 5: Test Your App
+#   - Visit your frontend URL from Render dashboard
+#   - Test file upload and AI features
+#
+# ========================================
+# Troubleshooting
+# ========================================
+#
+# ISSUE: Build fails with Python errors
+# FIX: Check requirements.txt has all dependencies
+#
+# ISSUE: Frontend can't connect to backend
+# FIX: 
+#   1. Check backend is deployed and shows "Live"
+#   2. Verify VITE_API_URL in frontend environment
+#   3. Check CORS settings in api/main.py
+#
+# ISSUE: Service shows "Unavailable"
+# FIX: Service is sleeping, wait 30-60 seconds
+#
+# ISSUE: Data keeps resetting
+# FIX: This is normal on free tier - data is ephemeral
+#      Upgrade to paid plan with disk for persistence
+#
+# ========================================
+# Upgrading (Optional)
+# ========================================
+#
+# To add persistent storage:
+# 
+# Add to backend service in this file:
+#   disk:
+#     name: smartrecruit-data
+#     mountPath: /data
+#     sizeGB: 1
+#
+# Then update environment variables:
+#   DATABASE_URL: sqlite:////data/recruitment.db
+#   CHROMA_PERSIST_DIR: /data/chroma_db
+#
+# Cost: $0.25/GB/month
+#
