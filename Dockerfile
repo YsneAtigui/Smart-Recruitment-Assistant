@@ -29,5 +29,5 @@ ENV PORT=8000
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
     CMD python -c "import requests; requests.get('http://localhost:8000/health')"
 
-# Run the application
-CMD ["uvicorn", "api.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Run the application using shell form to allow variable expansion
+CMD uvicorn api.main:app --host 0.0.0.0 --port ${PORT:-8080}

@@ -1,0 +1,19 @@
+# Exclude local environments and build artifacts
+venv/
+.venv/
+__pycache__/
+*.pyc
+.env
+.git/
+.gitignore
+.github/
+
+# Data
+chroma_db/
+recruitment.db
+data/
+
+# Frontend
+app/node_modules/
+app/dist/
+app/.env
