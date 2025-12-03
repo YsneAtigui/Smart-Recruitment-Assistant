@@ -174,7 +174,10 @@ async def match_cv_to_job(
             recommendations=match_result.recommendations,
             summary=cv_summary,
             experienceYears=years_of_experience,
-            role=role
+            role=role,
+            experience=cv.experience,
+            education=cv.education,
+            allSkills=cv.skills
         )
         
         logger.info(f"Successfully matched and saved CV: {cv.name} with score {match_result.total_score}")

@@ -18,7 +18,7 @@ import {
   RefreshCw
 } from './ui/Icons';
 import { FileUpload } from './ui/FileUpload';
-import { parseCV, parseJD, matchCVtoJD, queryRAG, indexCVforRAG, getDatabaseStats, getCollections, getCollectionDocuments, clearCollection, summarizeCV, getAllCandidates, deleteCandidate } from '../services/apiBackend';
+import { parseCV, parseJD, matchCVtoJD, queryRAG, indexCVforRAG, getDatabaseStats, getCollections, getCollectionDocuments, clearCollection, summarizeCV, getAllCandidates, deleteCandidate, queryAllCandidates, queryAllCVsForJob } from '../services/apiBackend';
 import { Candidate, JobDescription, ChatMessage, DatabaseStats, CollectionInfo } from '../types';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, Legend } from 'recharts';
 
@@ -45,6 +45,7 @@ export const RecruiterDashboard: React.FC<RecruiterDashboardProps> = ({ onBack }
   const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]);
   const [chatInput, setChatInput] = useState("");
   const [isChatLoading, setIsChatLoading] = useState(false);
+  const [queryMode, setQueryMode] = useState<'specific' | 'all-job' | 'all-database'>('all-job'); // Query mode for RAG
 
   // Database Management State
   const [dbStats, setDbStats] = useState<DatabaseStats | null>(null);
@@ -151,7 +152,7 @@ export const RecruiterDashboard: React.FC<RecruiterDashboardProps> = ({ onBack }
             matchResult.summary = cvSummary;
 
             // 6. Index for RAG (background)
-            indexCVforRAG(matchResult.id, matchResult.name, cvData.raw_text)
+            indexCVforRAG(matchResult.id, matchResult.name, cvData.raw_text, jdFile.id)
               .then(() => {
                 indexedCount++;
                 setIndexingNotification(`✓ ${indexedCount} CV${indexedCount > 1 ? 's' : ''} indexed to ChromaDB`);
@@ -200,31 +201,51 @@ export const RecruiterDashboard: React.FC<RecruiterDashboardProps> = ({ onBack }
     setIsChatLoading(true);
 
     try {
-      // Use selected candidate context if available
-      if (selectedCandidateId) {
-        const candidate = candidates.find(c => c.id === selectedCandidateId);
-        if (candidate) {
-          const response = await queryRAG(candidate.id, candidate.name, newMessage.text);
+      let answer: string;
+      let sources: string[] = [];
+      let sourceMetadata: Array<{ name: string; type: string; preview?: string }> | undefined;
 
-          const aiMessage: ChatMessage = {
-            id: (Date.now() + 1).toString(),
-            sender: 'ai',
-            text: response,
-            timestamp: new Date()
-          };
-
-          setChatHistory(prev => [...prev, aiMessage]);
-        }
+      // Determine which query to use based on mode
+      if (queryMode === 'all-database') {
+        // Query all candidates with database integration
+        const response = await queryAllCandidates(newMessage.text, jdFile?.id, 'recruiter');
+        answer = response.answer;
+        sources = response.sources;
+      } else if (queryMode === 'all-job' && jdFile) {
+        // Query all CVs for the specific job
+        const response = await queryAllCVsForJob(jdFile.id, newMessage.text, 'recruiter');
+        answer = response.answer;
+        sources = response.sources;
+      } else if (selectedCandidateId) {
+        // Query specific candidate
+        const candidateName = candidates.find(c => c.id === selectedCandidateId)?.name || "Unknown Candidate";
+        const response = await queryRAG(selectedCandidateId, candidateName, newMessage.text, 'recruiter', jdFile?.id);
+        answer = response.answer;
+        sources = response.sources;
+        sourceMetadata = response.source_metadata;
       } else {
-        // General query (not supported yet by backend RAG, mock response for now)
-        const aiMessage: ChatMessage = {
-          id: (Date.now() + 1).toString(),
-          sender: 'ai',
-          text: "Please select a candidate to ask specific questions about their CV.",
-          timestamp: new Date()
-        };
-        setChatHistory(prev => [...prev, aiMessage]);
+        // Default to all-job mode if job is selected
+        if (jdFile) {
+          const response = await queryAllCVsForJob(jdFile.id, newMessage.text, 'recruiter');
+          answer = response.answer;
+          sources = response.sources;
+        } else {
+          // Fallback to all candidates from database
+          const response = await queryAllCandidates(newMessage.text, undefined, 'recruiter');
+          answer = response.answer;
+          sources = response.sources;
+        }
       }
+
+      const aiMessage: ChatMessage = {
+        id: (Date.now() + 1).toString(),
+        sender: 'ai',
+        text: answer,
+        sources: sources,
+        timestamp: new Date()
+      };
+
+      setChatHistory(prev => [...prev, aiMessage]);
     } catch (err) {
       const errorMessage: ChatMessage = {
         id: (Date.now() + 1).toString(),
@@ -796,6 +817,7 @@ export const RecruiterDashboard: React.FC<RecruiterDashboardProps> = ({ onBack }
               </div>
               <button
                 onClick={() => {
+                  setQueryMode('specific');
                   setActiveTab('rag');
                 }}
                 className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium"
@@ -872,12 +894,53 @@ export const RecruiterDashboard: React.FC<RecruiterDashboardProps> = ({ onBack }
         <div>
           <h2 className="text-2xl font-bold text-slate-800">Ask AI Assistant</h2>
           <p className="text-slate-500">Query your candidate pool using natural language.</p>
-          {selectedCandidateId && (
-            <div className="mt-2 text-sm bg-blue-50 text-blue-700 px-3 py-1 rounded inline-block border border-blue-100">
-              Context: <strong>{candidates.find(c => c.id === selectedCandidateId)?.name}</strong>
-              <button onClick={() => setSelectedCandidateId(null)} className="ml-2 hover:underline opacity-60">Clear Context</button>
-            </div>
-          )}
+
+          {/* Query Mode Indicator */}
+          <div className="mt-3 flex items-center gap-2">
+            <span className="text-sm text-slate-600 font-medium">Query Mode:</span>
+            {queryMode === 'all-database' && (
+              <div className="flex items-center gap-2">
+                <span className="text-sm bg-purple-100 text-purple-700 px-3 py-1 rounded-lg border border-purple-200 font-medium">
+                  📊 All Candidates (Database + RAG)
+                </span>
+                <button
+                  onClick={() => setQueryMode('all-job')}
+                  className="text-xs text-slate-500 hover:text-slate-700 underline"
+                >
+                  Switch to Job Mode
+                </button>
+              </div>
+            )}
+            {queryMode === 'all-job' && jdFile && (
+              <div className="flex items-center gap-2">
+                <span className="text-sm bg-blue-100 text-blue-700 px-3 py-1 rounded-lg border border-blue-200 font-medium">
+                  💼 All CVs for: <strong>{jdFile.title}</strong>
+                </span>
+                <button
+                  onClick={() => setQueryMode('all-database')}
+                  className="text-xs text-slate-500 hover:text-slate-700 underline"
+                >
+                  Switch to Database Mode
+                </button>
+              </div>
+            )}
+            {selectedCandidateId && (
+              <div className="flex items-center gap-2">
+                <span className="text-sm bg-green-100 text-green-700 px-3 py-1 rounded-lg border border-green-200 font-medium">
+                  👤 Specific: <strong>{candidates.find(c => c.id === selectedCandidateId)?.name}</strong>
+                </span>
+                <button
+                  onClick={() => {
+                    setSelectedCandidateId(null);
+                    setQueryMode('all-job');
+                  }}
+                  className="text-xs text-slate-500 hover:text-slate-700 underline"
+                >
+                  Clear
+                </button>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Database Stats Card */}
@@ -955,24 +1018,115 @@ export const RecruiterDashboard: React.FC<RecruiterDashboardProps> = ({ onBack }
           {chatHistory.length === 0 && (
             <div className="text-center text-slate-400 mt-20">
               <MessageSquare size={48} className="mx-auto mb-4 opacity-50" />
-              <p>Ask questions like:</p>
-              <ul className="mt-4 space-y-2 text-sm">
-                <li>"Who has the most experience with React?"</li>
-                <li>"Does John Doe have any cloud certifications?"</li>
-                <li>"Compare the top 3 candidates."</li>
+              <p className="font-medium mb-2">Ask questions like:</p>
+              <ul className="mt-4 space-y-2 text-sm text-left max-w-md mx-auto">
+                {queryMode === 'all-database' && (
+                  <>
+                    <li className="bg-white border border-slate-200 p-2 rounded">"Who are the top A-grade candidates?"</li>
+                    <li className="bg-white border border-slate-200 p-2 rounded">"Which candidates have Python and React experience?"</li>
+                    <li className="bg-white border border-slate-200 p-2 rounded">"Compare all candidates with cloud certifications."</li>
+                  </>
+                )}
+                {queryMode === 'all-job' && (
+                  <>
+                    <li className="bg-white border border-slate-200 p-2 rounded">"Who has the most experience with React for this job?"</li>
+                    <li className="bg-white border border-slate-200 p-2 rounded">"Summarize the strengths of all candidates."</li>
+                    <li className="bg-white border border-slate-200 p-2 rounded">"Compare the top 3 candidates for this position."</li>
+                  </>
+                )}
+                {selectedCandidateId && (
+                  <>
+                    <li className="bg-white border border-slate-200 p-2 rounded">"Does this candidate have any cloud certifications?"</li>
+                    <li className="bg-white border border-slate-200 p-2 rounded">"What projects has this candidate worked on?"</li>
+                    <li className="bg-white border border-slate-200 p-2 rounded">"Summarize their leadership experience."</li>
+                  </>
+                )}
               </ul>
             </div>
           )}
-          {chatHistory.map(msg => (
-            <div key={msg.id} className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
-              <div className={`max-w-[80%] rounded-2xl p-4 ${msg.sender === 'user' ? 'bg-recruiter-600 text-white rounded-br-none' : 'bg-white border border-slate-200 text-slate-800 rounded-bl-none shadow-sm'}`}>
-                <p className="whitespace-pre-wrap">{msg.text}</p>
-                <div className={`text-xs mt-2 ${msg.sender === 'user' ? 'text-blue-100' : 'text-slate-400'}`}>
-                  {msg.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+          {chatHistory.map(msg => {
+            // Format message text for better display
+            const formatMessage = (text: string) => {
+              // Helper to parse inline markdown
+              const parseInlineMarkdown = (line: string) => {
+                const parts: React.ReactNode[] = [];
+                let lastIndex = 0;
+                const boldRegex = /\*\*([^*]+)\*\*/g;
+                let match;
+                while ((match = boldRegex.exec(line)) !== null) {
+                  if (match.index > lastIndex) {
+                    parts.push(line.substring(lastIndex, match.index));
+                  }
+                  parts.push(<strong key={match.index}>{match[1]}</strong>);
+                  lastIndex = match.index + match[0].length;
+                }
+                if (lastIndex < line.length) {
+                  parts.push(line.substring(lastIndex));
+                }
+                return parts.length > 0 ? parts : line;
+              };
+              // Split by lines
+              const lines = text.split('\n');
+              return lines.map((line, idx) => {
+                // Check if line starts with bullet point or number
+                const bulletMatch = line.match(/^[\s-]*[\*\-•]\s+(.+)/);
+                const numberMatch = line.match(/^\s*(\d+)[\.)\s]+(.+)/);
+
+                if (bulletMatch) {
+                  return (
+                    <div key={idx} className="flex items-start gap-2 mb-1">
+                      <span className="text-blue-600 mt-1 flex-shrink-0">•</span>
+                      <span className="flex-1">{parseInlineMarkdown(bulletMatch[1])}</span>
+                    </div>
+                  );
+                } else if (numberMatch) {
+                  return (
+                    <div key={idx} className="flex items-start gap-2 mb-1">
+                      <span className="font-semibold text-blue-600 flex-shrink-0">{numberMatch[1]}.</span>
+                      <span className="flex-1">{parseInlineMarkdown(numberMatch[2])}</span>
+                    </div>
+                  );
+                } else if (line.trim()) {
+                  return <p key={idx} className="mb-2">{parseInlineMarkdown(line)}</p>;
+                }
+                return null;
+              });
+            };
+
+            return (
+              <div key={msg.id} className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
+                <div className={`max-w-[80%] rounded-2xl p-4 ${msg.sender === 'user' ? 'bg-recruiter-600 text-white rounded-br-none' : 'bg-white border border-slate-200 text-slate-700 rounded-bl-none shadow-sm'}`}>
+                  <div className="text-sm leading-relaxed">
+                    {msg.sender === 'ai' ? formatMessage(msg.text) : <p>{msg.text}</p>}
+                  </div>
+
+                  {/* New source display - only document names */}
+                  {msg.source_metadata && msg.source_metadata.length > 0 && (
+                    <div className="mt-3 pt-3 border-t border-slate-100">
+                      <p className="text-[11px] font-semibold text-slate-500 uppercase tracking-wide mb-2">Sources:</p>
+                      <div className="flex flex-wrap gap-1.5">
+                        {msg.source_metadata.map((source, idx) => (
+                          <span
+                            key={idx}
+                            className={`inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-medium ${source.type === 'cv'
+                              ? 'bg-blue-50 text-blue-700 border border-blue-200'
+                              : 'bg-purple-50 text-purple-700 border border-purple-200'
+                              }`}
+                          >
+                            {source.type === 'cv' ? '📄' : '💼'} {source.name}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  <span className="text-[10px] opacity-60 block mt-2 text-right">
+                    {new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                  </span>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
           {isChatLoading && (
             <div className="flex justify-start">
               <div className="bg-white border border-slate-200 rounded-2xl rounded-bl-none p-4 shadow-sm w-3/4">
@@ -1034,9 +1188,22 @@ export const RecruiterDashboard: React.FC<RecruiterDashboardProps> = ({ onBack }
 
     return (
       <div className="max-w-7xl mx-auto py-8 px-4">
-        <div className="mb-6">
-          <h2 className="text-2xl font-bold text-slate-800">All Candidates Database</h2>
-          <p className="text-slate-500">View and manage all uploaded candidates</p>
+        <div className="mb-6 flex justify-between items-end">
+          <div>
+            <h2 className="text-2xl font-bold text-slate-800">All Candidates Database</h2>
+            <p className="text-slate-500">View and manage all uploaded candidates</p>
+          </div>
+          <button
+            onClick={() => {
+              setQueryMode('all-database');
+              setSelectedCandidateId(null);
+              setActiveTab('rag');
+            }}
+            className="flex items-center px-4 py-2 bg-recruiter-600 hover:bg-recruiter-700 text-white rounded-lg font-medium shadow-md transition-all"
+          >
+            <MessageSquare size={18} className="mr-2" />
+            Ask AI About All Candidates
+          </button>
         </div>
 
         {dbLoading ? (

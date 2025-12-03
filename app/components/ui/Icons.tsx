@@ -21,7 +21,12 @@ import {
   Copy,
   Database,
   Trash2,
-  RefreshCw
+  RefreshCw,
+  GraduationCap,
+  Building2,
+  Calendar,
+  Send,
+  MessageCircle
 } from 'lucide-react';
 
 export {
@@ -47,5 +52,10 @@ export {
   Copy,
   Database,
   Trash2,
-  RefreshCw
+  RefreshCw,
+  GraduationCap,
+  Building2,
+  Calendar,
+  Send,
+  MessageCircle
 };

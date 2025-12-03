@@ -14,13 +14,14 @@ except (ValueError, ImportError) as e:
     print(f"Warning: Gemini model could not be configured. Q&A functions will be disabled. Error: {e}")
     genai_model = None
 
-def answer_question(question, rag_pipeline):
+def answer_question(question, rag_pipeline, persona="recruiter"):
     """
     Answers a question using the RAG pipeline.
 
     Args:
         question (str): The question to answer.
         rag_pipeline (RAGPipeline): The RAG pipeline instance.
+        persona (str): The persona to adopt ('recruiter' or 'candidate').
 
     Returns:
         str: The generated answer.
@@ -32,26 +33,42 @@ def answer_question(question, rag_pipeline):
     retrieved_results = rag_pipeline.query(question)
     context = "\n".join(retrieved_results['documents'][0])
 
-    prompt = f"""
-    You are an Expert Recruitment Assistant. Your goal is to help recruiters evaluate candidates and make informed decisions.
-    Answer the following question based on the provided context.
-    
-    You can answer questions about:
-    - Candidate qualifications and experience
-    - Comparison between the candidate and job requirements (if provided in context)
-    - Suitability for specific roles
-    - Summaries of strengths and weaknesses
-    
-    If the question requires comparing the candidate to a job post or evaluating their suitability, use the context to provide a reasoned assessment.
-    If the answer is not explicitly in the context but can be inferred, provide a helpful response based on the available information.
-    If the answer is completely unrelated to the context, say 'The answer is not available in the provided context.'
-
-    **Question:**
-    {question}
-
-    **Context:**
-    {context}
-    """
+    if persona == "candidate":
+        prompt = f"""
+        You are an Expert Career Coach and Recruitment Assistant. 
+        Your goal is to help candidates improve their profiles and recruiters evaluate candidates.
+        
+        **Context:**
+        {context}
+        
+        **Question:**
+        {question}
+        
+        **Instructions:**
+        1. Answer the question based on the provided context (CV/Job Description).
+        2. If the user asks for advice (e.g., "How to improve?", "What is missing?"), analyze the context to identify gaps or areas for improvement and provide actionable recommendations.
+        3. You can use your general knowledge about recruitment standards to give advice, but always ground it in the specific details from the context.
+        4. Be encouraging, professional, and specific.
+        5. If the question is completely unrelated to the candidate's profile or recruitment, politely say you can only assist with career and recruitment topics.
+        """
+    else:  # Default to recruiter
+        prompt = f"""
+        You are an Expert Recruitment Assistant. Your goal is to help recruiters evaluate candidates and make informed decisions.
+        
+        **Context:**
+        The following text contains information from one or more Candidate CVs and potentially a Job Description.
+        {context}
+        
+        **Question:**
+        {question}
+        
+        **Instructions:**
+        1. Answer the question based ONLY on the provided context.
+        2. The context may contain details for MULTIPLE candidates. Identify them by name.
+        3. If the user asks about a specific candidate (e.g., "Amine"), look for their details in the context.
+        4. If the user asks to compare candidates, use the details provided for each to make a comparison.
+        5. If the answer is not in the context, say 'The answer is not available in the provided context.'
+        """
 
     try:
         response = genai_model.generate_content(prompt)

@@ -20,7 +20,7 @@ class RAGPipeline:
         self.persist_directory = persist_directory
         self.collection_name = collection_name
 
-    def _chunk_text(self, text, chunk_size=1000, chunk_overlap=200):
+    def _chunk_text(self, text, chunk_size=500, chunk_overlap=100):
         """
         Splits a text into overlapping chunks with better handling.
 
@@ -222,4 +222,63 @@ class RAGPipeline:
             return documents
         except Exception as e:
             print(f"Error getting documents: {e}")
+            return []
+
+    def get_all_chunks(self) -> List[Dict[str, Any]]:
+        """
+        Get all chunks in the collection with full details for debugging.
+
+        Returns:
+            list[dict]: List of chunks with IDs, content, metadata, and embeddings info.
+        """
+        try:
+            results = self.collection.get(include=['documents', 'metadatas', 'embeddings'])
+            chunks = []
+            
+            if results and 'ids' in results:
+                for i, chunk_id in enumerate(results['ids']):
+                    chunk_info = {
+                        'id': chunk_id,
+                        'content': results.get('documents', [])[i] if i < len(results.get('documents', [])) else '',
+                        'metadata': results.get('metadatas', [])[i] if i < len(results.get('metadatas', [])) else {},
+                        'has_embedding': i < len(results.get('embeddings', [])),
+                        'content_length': len(results.get('documents', [])[i]) if i < len(results.get('documents', [])) else 0
+                    }
+                    chunks.append(chunk_info)
+            
+            return chunks
+        except Exception as e:
+            print(f"Error getting chunks: {e}")
+            return []
+
+    def get_chunks_by_metadata(self, metadata_filter: Dict[str, Any]) -> List[Dict[str, Any]]:
+        """
+        Get chunks filtered by specific metadata.
+
+        Args:
+            metadata_filter (dict): Metadata filters to apply.
+
+        Returns:
+            list[dict]: List of matching chunks with their details.
+        """
+        try:
+            results = self.collection.get(
+                where=metadata_filter,
+                include=['documents', 'metadatas']
+            )
+            chunks = []
+            
+            if results and 'ids' in results:
+                for i, chunk_id in enumerate(results['ids']):
+                    chunk_info = {
+                        'id': chunk_id,
+                        'content': results.get('documents', [])[i] if i < len(results.get('documents', [])) else '',
+                        'metadata': results.get('metadatas', [])[i] if i < len(results.get('metadatas', [])) else {},
+                        'chunk_index': results.get('metadatas', [])[i].get('chunk_index', 0) if i < len(results.get('metadatas', [])) else 0
+                    }
+                    chunks.append(chunk_info)
+            
+            return chunks
+        except Exception as e:
+            print(f"Error getting chunks by metadata: {e}")
             return []

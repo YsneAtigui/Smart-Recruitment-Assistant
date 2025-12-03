@@ -68,15 +68,20 @@ export const matchCVtoJD = async (cvData: any, jdData: any): Promise<Candidate> 
 /**
  * Index a CV for RAG-based Q&A
  */
+/**
+ * Index a CV for RAG-based Q&A
+ */
 export const indexCVforRAG = async (
     candidateId: string,
     candidateName: string,
-    cvText: string
+    cvText: string,
+    jobId?: string
 ): Promise<void> => {
     await apiClient.post('/rag/index', {
         candidateId,
         candidateName,
         cvText,
+        jobId
     });
 };
 
@@ -86,17 +91,66 @@ export const indexCVforRAG = async (
 export const queryRAG = async (
     candidateId: string,
     candidateName: string,
-    query: string
-): Promise<string> => {
+    query: string,
+    persona: 'recruiter' | 'candidate' = 'recruiter',
+    jobId?: string
+): Promise<{ answer: string; sources: string[]; source_metadata?: Array<{ name: string; type: string; preview?: string }> }> => {
     await delay(1500); // Add slight delay for better UX
 
-    const response = await apiClient.post<{ answer: string; sources?: string[] }>('/rag/query', {
+    const response = await apiClient.post<{ answer: string; sources?: string[]; source_metadata?: Array<{ name: string; type: string; preview?: string }> }>('/rag/query', {
         candidateId,
         candidateName,
         query,
+        persona,
+        jobId
     });
 
-    return response.data.answer;
+    return {
+        answer: response.data.answer,
+        sources: response.data.sources || [],
+        source_metadata: response.data.source_metadata
+    };
+};
+
+/**
+ * Query all CVs for a specific job description
+ */
+export const queryAllCVsForJob = async (
+    jobId: string,
+    query: string,
+    persona: 'recruiter' | 'candidate' = 'recruiter'
+): Promise<{ answer: string; sources: string[] }> => {
+    await delay(1500);
+
+    const response = await apiClient.post<{ answer: string; sources?: string[] }>('/rag/query-all-cvs', {
+        jobId,
+        query,
+        persona
+    });
+
+    return {
+        answer: response.data.answer,
+        sources: response.data.sources || []
+    };
+};
+
+/**
+ * Query all candidates with database integration
+ */
+export const queryAllCandidates = async (
+    query: string,
+    jobId?: string,
+    persona: 'recruiter' | 'candidate' = 'recruiter'
+): Promise<{ answer: string; sources: string[]; candidates_found: number; database_data_included: boolean }> => {
+    await delay(1500);
+
+    const response = await apiClient.post('/rag/query-all-candidates', {
+        query,
+        jobId,
+        persona
+    });
+
+    return response.data;
 };
 
 /**

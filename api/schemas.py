@@ -24,6 +24,7 @@ class ScoresResponse(BaseModel):
 
 class JobDescriptionResponse(BaseModel):
     """Job description response"""
+    id: str
     title: str
     company: str
     requiredSkills: List[str]
@@ -46,11 +47,21 @@ class CandidateResponse(BaseModel):
     summary: str
     experienceYears: int
     role: str
+    experience: Optional[List[str]] = []
+    education: Optional[List[str]] = []
+    allSkills: Optional[List[str]] = []
+
+class SourceInfo(BaseModel):
+    """Source information with metadata"""
+    name: str  # Candidate name or document name
+    type: str  # 'cv' or 'job_description'
+    preview: Optional[str] = None  # Short preview text
 
 class RAGQueryResponse(BaseModel):
     """Response for RAG query"""
     answer: str
-    sources: Optional[List[str]] = []
+    sources: Optional[List[str]] = []  # Legacy text sources
+    source_metadata: Optional[List[SourceInfo]] = []  # New structured sources
 
 class SummarizationResponse(BaseModel):
     """Response for summarization"""
@@ -69,12 +80,47 @@ class RAGIndexRequest(BaseModel):
     candidateId: str
     candidateName: str
     cvText: str
+    jobId: Optional[str] = None
 
 class RAGQueryRequest(BaseModel):
     """Request to query RAG"""
     candidateId: str
     candidateName: str
     query: str
+    persona: Optional[str] = "recruiter"
+    jobId: Optional[str] = None
+
+class RAGQueryAllCVsRequest(BaseModel):
+    """Request to query all CVs for a specific job"""
+    jobId: str
+    query: str
+    persona: Optional[str] = "recruiter"
+
+class RAGQuerySpecificCVRequest(BaseModel):
+    """Request to query a specific CV"""
+    candidateId: str
+    query: str
+    persona: Optional[str] = "recruiter"
+
+class RAGQueryAllCandidatesRequest(BaseModel):
+    """Request to query all candidates with database integration"""
+    query: str
+    jobId: Optional[str] = None
+    persona: Optional[str] = "recruiter"
+
+class ChunkInfo(BaseModel):
+    """Information about a document chunk"""
+    id: str
+    content: str
+    metadata: Dict[str, Any]
+    chunk_index: int
+
+class AllCandidatesQueryResponse(BaseModel):
+    """Response for querying all candidates"""
+    answer: str
+    sources: List[str]
+    candidates_found: int
+    database_data_included: bool
 
 # ========== Database Management Schemas ==========
 class CollectionInfoResponse(BaseModel):

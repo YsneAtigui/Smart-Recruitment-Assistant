@@ -33,6 +33,7 @@ export interface Candidate {
 }
 
 export interface JobDescription {
+  id: string;
   title: string;
   company: string;
   requiredSkills: string[];
@@ -40,11 +41,18 @@ export interface JobDescription {
   rawText: string;
 }
 
+export interface SourceInfo {
+  name: string;
+  type: 'cv' | 'job_description';
+  preview?: string;
+}
+
 export interface ChatMessage {
   id: string;
   sender: 'user' | 'ai';
   text: string;
-  sources?: string[];
+  sources?: string[];  // Legacy text sources
+  source_metadata?: SourceInfo[];  // New structured sources
   timestamp: Date;
 }
 

@@ -72,7 +72,7 @@ async def upload_cv(file: UploadFile = File(...)):
                 candidate_id = cv_data.get("email", "") or cv_data.get("name", file.filename).replace(" ", "_").lower()
                 
                 # Index CV for RAG
-                collection_name = f"cv_{candidate_id.replace('@', '_').replace('.', '_').replace('-', '_')}"
+                collection_name = "all_cvs"
                 rag_pipeline = RAGPipeline(
                     collection_name=collection_name,
                     persist_directory="./chroma_db"
@@ -97,6 +97,8 @@ async def upload_cv(file: UploadFile = File(...)):
                 cv_data["chromadb_indexed"] = False
             
             logger.info(f"Successfully processed CV: {file.filename}")
+            
+            cv_data["candidate_id"] = candidate_id
             
             return UploadStatusResponse(
                 status="success",
@@ -167,15 +169,21 @@ async def upload_job_description(file: UploadFile = File(...)):
                 from src.ai.rag import RAGPipeline
                 from datetime import datetime
                 
-                # Index JD in a dedicated collection
+                # Get job title safely and generate ID
+                job_title = jd_data.get("job_title") or "unknown"
+                # Sanitize job_title for ChromaDB (alphanumeric, underscores, hyphens only)
+                import re
+                safe_title = re.sub(r'[^a-zA-Z0-9_-]', '_', job_title.replace(' ', '_').lower())
+                job_id = f"jd_{safe_title}_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+                
+                # Index JD in a dedicated collection for this job
+                # This collection will hold the JD + all CVs for this job
+                collection_name = f"job_{job_id}"
+                
                 rag_pipeline = RAGPipeline(
-                    collection_name="job_descriptions",
+                    collection_name=collection_name,
                     persist_directory="./chroma_db"
                 )
-                
-                # Get job title safely
-                job_title = jd_data.get("job_title") or "unknown"
-                job_id = f"jd_{job_title.replace(' ', '_').lower()}_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
                 
                 rag_pipeline.index_documents(
                     documents=[jd_text],
@@ -189,11 +197,14 @@ async def upload_job_description(file: UploadFile = File(...)):
                     }]
                 )
                 
-                logger.info(f"Successfully indexed JD to ChromaDB: {jd_data.get('job_title', file.filename)}")
+                logger.info(f"Successfully indexed JD to ChromaDB collection {collection_name}")
                 jd_data["chromadb_indexed"] = True
+                jd_data["chromadb_collection"] = collection_name
             except Exception as index_error:
                 logger.warning(f"Failed to index JD to ChromaDB: {index_error}")
                 jd_data["chromadb_indexed"] = False
+                # Fallback ID if indexing fails (though we should probably fail hard or handle this better)
+                job_id = f"jd_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
             
             logger.info(f"Successfully processed JD: {file.filename}")
             
@@ -207,6 +218,7 @@ async def upload_job_description(file: UploadFile = File(...)):
             
             # Map to frontend format with validated data
             return JobDescriptionResponse(
+                id=job_id,
                 title=job_title,
                 company=company_name,
                 requiredSkills=jd_data.get("skills", []),
