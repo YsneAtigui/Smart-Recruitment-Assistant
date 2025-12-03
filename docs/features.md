@@ -407,7 +407,7 @@ Sources:
 | Comparison Tool | ✓ | ✗ |
 | Recommendations | ✓ | ✓ |
 | Learning Resources | ✗ | ✓ |
-| AI Career Coach | ✗ | ✓ |
+| AI Career Coach | ✗ | ✗ |
 
 ---
 
