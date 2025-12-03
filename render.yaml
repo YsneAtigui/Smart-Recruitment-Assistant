@@ -38,7 +38,6 @@ services:
   - type: web
     name: smartrecruit-frontend
     runtime: static
-    region: oregon  # Should match backend region for lower latency
     plan: free
     branch: main
     buildCommand: cd app && npm ci && npm run build
