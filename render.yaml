@@ -38,7 +38,6 @@ services:
   - type: web
     name: smartrecruit-frontend
     runtime: static
-    plan: free
     branch: main
     buildCommand: cd app && npm ci && npm run build
     staticPublishPath: ./app/dist
