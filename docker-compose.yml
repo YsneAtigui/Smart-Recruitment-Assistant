@@ -1,0 +1,91 @@
+version: '3.8'
+
+services:
+  # Backend Service - FastAPI
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: smartrecru-backend
+    ports:
+      - "8000:8000"
+    environment:
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - DATABASE_URL=sqlite:///./recruitment.db
+      - CHROMA_PERSIST_DIR=/app/chroma_db
+    volumes:
+      # Mount source code for development (hot reload)
+      - ./api:/app/api
+      - ./src:/app/src
+      - ./config.py:/app/config.py
+      # Persistent data
+      - chroma_data:/app/chroma_db
+      - cv_data:/app/data/cvs
+      - jd_data:/app/data/job_offers
+      - output_data:/app/output
+      - db_data:/app
+    networks:
+      - smartrecru-network
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD", "python", "-c", "import requests; requests.get('http://localhost:8000/health')" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Frontend Service - React + Vite (Development)
+  frontend-dev:
+    build:
+      context: ./app
+      dockerfile: Dockerfile.dev
+    container_name: smartrecru-frontend-dev
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_URL=http://localhost:8000
+    volumes:
+      # Mount source code for hot reload
+      - ./app:/app
+      - /app/node_modules
+    networks:
+      - smartrecru-network
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
+    profiles:
+      - dev
+
+  # Frontend Service - React + Nginx (Production)
+  frontend:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    container_name: smartrecru-frontend
+    ports:
+      - "5173:80"
+    networks:
+      - smartrecru-network
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
+    profiles:
+      - prod
+
+networks:
+  smartrecru-network:
+    driver: bridge
+
+volumes:
+  chroma_data:
+    driver: local
+  cv_data:
+    driver: local
+  jd_data:
+    driver: local
+  output_data:
+    driver: local
+  db_data:
+    driver: local

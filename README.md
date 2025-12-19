@@ -50,6 +50,63 @@ Open [http://localhost:5173](http://localhost:5173) in your browser.
 
 ---
 
+## 🐳 Docker Quick Start
+
+### Prerequisites
+- Docker Desktop (Windows/Mac) or Docker Engine (Linux)
+- Docker Compose V2
+- Google Gemini API Key ([Get it here](https://makersuite.google.com/app/apikey))
+
+### Run with Docker
+
+```bash
+# 1. Clone repository
+git clone <repository_url>
+cd SmartRecru
+
+# 2. Configure environment
+echo "GEMINI_API_KEY=your_api_key_here" > .env
+
+# 3. Run in development mode (with hot reload)
+docker-compose --profile dev up -d
+
+# OR run in production mode
+docker-compose --profile prod up -d
+
+# 4. View logs
+docker-compose logs -f
+
+# 5. Stop services
+docker-compose down
+```
+
+**Access the application:**
+- Frontend: [http://localhost:5173](http://localhost:5173)
+- Backend API: [http://localhost:8000](http://localhost:8000)
+- API Documentation: [http://localhost:8000/docs](http://localhost:8000/docs)
+
+**Useful Docker commands:**
+```bash
+# Rebuild services after code changes
+docker-compose build
+
+# View running containers
+docker-compose ps
+
+# Access backend logs
+docker-compose logs backend
+
+# Execute commands in backend container
+docker-compose exec backend python -m pytest
+
+# Clean up volumes (WARNING: deletes data)
+docker-compose down -v
+```
+
+📖 **Docker Details**: See [Docker Documentation](./docs/docker.md)
+
+---
+
 ## ✨ Features
 
 ### For Recruiters
